@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import router
+from app.core.database import get_db
 
 app = FastAPI(
     title="Magneto Job",
