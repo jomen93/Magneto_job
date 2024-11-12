@@ -1,6 +1,7 @@
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from app.models.dna_sequence import DNASequence
 
 
@@ -29,7 +30,7 @@ class MutantDetectorService:
             is_mutant = any(future.result() for future in as_completed(futures))
         
         dna_entry = DNASequence(
-            sequence=dna_matrix,
+            sequence=dna_matrix.tolist(),
             is_mutant=is_mutant,
             sequence_length=sequence_length,
             mutant_sequence_count=len(mutant_patterns),
@@ -37,8 +38,12 @@ class MutantDetectorService:
             detected_patterns=mutant_patterns if is_mutant else None
         )
 
-        self.db.add(dna_entry)
-        self.db.commit()
+        try:
+            self.db.add(dna_entry)
+            self.db.commit()
+        except SQLAlchemyError as e:
+            print(f"Error  to save in the database: {e}")
+            self.db.rollback()
 
         return is_mutant
 
