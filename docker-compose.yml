@@ -14,5 +14,17 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: magneto_app
+    environment:
+      DATABASE_URL: "mysql+pymysql://johanmendez:meli@db:3306/magneto"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
 volumes:
   db_data:
