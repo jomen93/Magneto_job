@@ -8,7 +8,7 @@ from app.core.database import get_db
 app = FastAPI(
     title="Magneto Job",
     description="API to find out if it's an X men",
-    version="0.0.1 - Born a Hero"
+    version="0.0.2 - Born a Hero"
 )
 
 app.add_middleware(
