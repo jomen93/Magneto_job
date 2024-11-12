@@ -1,3 +1,5 @@
+import os
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import router
@@ -19,4 +21,8 @@ app.add_middleware(
 )
 
 app.include_router(router)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    uvircorn.run("app.main:app", host="0.0.0.0", port=port)
 # uvircorn main:app --reload
