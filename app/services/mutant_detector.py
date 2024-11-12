@@ -29,22 +29,22 @@ class MutantDetectorService:
 
             is_mutant = any(future.result() for future in as_completed(futures))
         
-        # dna_entry = DNASequence(
-        #     sequence=dna_matrix.tolist(),
-        #     is_mutant=is_mutant,
-        #     sequence_length=sequence_length,
-        #     mutant_sequence_count=len(mutant_patterns),
-        #     human_sequence_count=len(human_patterns),
-        #     detected_patterns=mutant_patterns if is_mutant else None
-        # )
+        dna_entry = DNASequence(
+            sequence=dna_matrix.tolist(),
+            is_mutant=is_mutant,
+            sequence_length=sequence_length,
+            mutant_sequence_count=len(mutant_patterns),
+            human_sequence_count=len(human_patterns),
+            detected_patterns=mutant_patterns if is_mutant else None
+        )
 
-        # try:
-        #     self.db.add(dna_entry)
-        #     self.db.commit()
-        # except SQLAlchemyError as e:
-        #     print(f"Error  to save in the database: {e}")
-        #     self.db.rollback()
-        #
+        try:
+            self.db.add(dna_entry)
+            self.db.commit()
+        except SQLAlchemyError as e:
+            print(f"Error  to save in the database: {e}")
+            self.db.rollback()
+        
         return is_mutant
 
 
