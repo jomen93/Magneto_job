@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from typing import List
+from sqlalchemy.orm import Session
 
 from app.services.mutant_detector import MutantDetectorService
-
+from app.core.database import get_db
 
 router = APIRouter()
 
@@ -13,8 +14,8 @@ class DNAModel(BaseModel):
 
 
 @router.post("/", name="DNA info", description="Return is Mutant") 
-async def is_mutant(dna_model: DNAModel):
-    detector = MutantDetectorService()
+async def is_mutant(dna_model: DNAModel, db: Session = Depends(get_db)):
+    detector = MutantDetectorService(db)
     is_mutant = detector.is_mutant(dna_model.dna)
 
     if is_mutant:
