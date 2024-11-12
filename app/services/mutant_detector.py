@@ -38,13 +38,13 @@ class MutantDetectorService:
             detected_patterns=mutant_patterns if is_mutant else None
         )
 
-        try:
-            self.db.add(dna_entry)
-            self.db.commit()
-        except SQLAlchemyError as e:
-            print(f"Error  to save in the database: {e}")
-            self.db.rollback()
-
+        # try:
+        #     self.db.add(dna_entry)
+        #     self.db.commit()
+        # except SQLAlchemyError as e:
+        #     print(f"Error  to save in the database: {e}")
+        #     self.db.rollback()
+        #
         return is_mutant
 
 
