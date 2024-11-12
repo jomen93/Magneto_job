@@ -8,5 +8,5 @@ router = APIRouter()
 
 @router.get("/", name="Statistical info", description="Related with data") 
 async def get_statistics(db: Session = Depends(get_db)):
-    stats = get_stats()
+    stats = get_stats(db)
     return stats
